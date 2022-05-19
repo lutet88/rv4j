@@ -6,7 +6,7 @@ an SQLite or MySQL/MariaDB database!
 
 ### tutorial
 ```java
-public void main(String[] args) {
+public static void main(String[] args) {
     RemoteConnection rc = new SQLiteConnection("test.db");
     // RemoteConnection rc = new MySQLConnection("localhost:3288");
     
