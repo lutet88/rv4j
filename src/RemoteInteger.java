@@ -1,9 +1,19 @@
 import java.sql.*;
 import java.util.*;
 
-public class RemoteInteger extends Remote {
-    private RemoteConnection rc;
-    private Integer forcedHashCode;
+public class RemoteInteger extends RemoteNumerical {
+    private static final String className = "RemoteInteger";
+    private static final String mainType = "integer";
+
+    @Override
+    public String getClassName() {
+        return className;
+    }
+
+    @Override
+    public String getMainType() {
+        return mainType;
+    }
 
     public RemoteInteger (RemoteConnection rc, Integer value) {
         initialize(rc);
@@ -13,33 +23,7 @@ public class RemoteInteger extends Remote {
 
     private RemoteInteger (RemoteConnection rc, Integer forcedHash, boolean dummy) {
         this.rc = rc;
-        this.forcedHashCode = forcedHash;
-    }
-
-    @Override
-    public boolean initialize(RemoteConnection rc) {
-        try {
-            this.rc = rc;
-            this.rc.initialize("RemoteInteger", new String[]{"value"}, new String[]{"integer"});
-            return true;
-        } catch (SQLException e) {
-            return false;
-        }
-    }
-
-    public boolean setValue(Integer value) {
-        return this.rc.executeUpdate("UPDATE RemoteInteger SET value = " + value.toString() + " WHERE id = " + idCode() + ";");
-    }
-
-    @Override
-    public boolean delete() {
-        return this.rc.executeUpdate("DELETE FROM RemoteInteger WHERE id = "+ idCode() + ";");
-    }
-
-    @Override
-    public int idCode() {
-        if (forcedHashCode != null) return forcedHashCode;
-        return hashCode();
+        forcedHashCode = forcedHash;
     }
 
     public Integer getValue() {
@@ -52,9 +36,10 @@ public class RemoteInteger extends Remote {
     }
 
     public static Set<RemoteInteger> loadAll(RemoteConnection rc) {
-        ResultSet rs = rc.executeQuery("SELECT * FROM RemoteInteger;");
         Set<RemoteInteger> s = new HashSet<>();
         try {
+            rc.initialize("RemoteInteger", new String[]{"value"}, new String[]{"integer"});
+            ResultSet rs = rc.executeQuery("SELECT * FROM RemoteInteger;");
             while (rs.next()) {
                 s.add(new RemoteInteger(rc, rs.getInt("id"), true));
             }
@@ -62,10 +47,5 @@ public class RemoteInteger extends Remote {
         } catch (SQLException e) {
             return null;
         }
-    }
-
-    @Override
-    public String toString() {
-        return getValue().toString();
     }
 }

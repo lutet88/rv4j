@@ -6,21 +6,21 @@ public class RemoteDriver {
     public static void main(String[] args) {
         RemoteConnection rc = new SQLiteConnection("test.db");
 
-        Set<RemoteInteger> riSet = RemoteInteger.loadAll(rc);
-        System.out.println("existing RemoteIntegers: "+riSet);
+        Set<RemoteFloat> riSet = RemoteFloat.loadAll(rc);
+        System.out.println("existing RemoteFloat: "+riSet);
 
-        RemoteInteger ri = new RemoteInteger(rc, 14);
-        RemoteInteger riStored = new RemoteInteger(rc, (int) (Math.random() * 200));
-
-        System.out.println("value of ri: " + ri.getValue());
-        System.out.println("value of ri.idCode(): "+ri.idCode());
-
-        ri.setValue(-15);
+        RemoteFloat ri = new RemoteFloat(rc, 14.4f);
+        RemoteFloat riStored = new RemoteFloat(rc, (float) (Math.random() * 200));
 
         System.out.println("value of ri: " + ri.getValue());
         System.out.println("value of ri.idCode(): "+ri.idCode());
 
-        ri.setValue(200);
+        ri.setValue(-15.0f);
+
+        System.out.println("value of ri: " + ri.getValue());
+        System.out.println("value of ri.idCode(): "+ri.idCode());
+
+        ri.setValue(200.4f);
 
         System.out.println("value of ri: " + ri.getValue());
         System.out.println("value of ri.idCode(): "+ri.idCode());
@@ -29,5 +29,7 @@ public class RemoteDriver {
 
         System.out.println("value of ri: " + ri.getValue());
         System.out.println("value of ri.idCode(): "+ri.idCode());
-    }
+
+        System.out.println("value of stored ri: "+riStored.getValue());
+    }]
 }
