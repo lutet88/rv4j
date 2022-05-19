@@ -1,0 +1,5 @@
+# stupid jetbrains
+.idea/*
+out/*
+*.db
+*.iml
