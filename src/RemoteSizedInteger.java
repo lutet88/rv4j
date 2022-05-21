@@ -2,8 +2,8 @@ import java.sql.*;
 import java.util.*;
 
 public class RemoteSizedInteger extends RemoteNumerical {
-    private static String className;
-    private static String mainType;
+    private String className;
+    private String mainType;
     private int bitSize;
 
     @Override
@@ -16,17 +16,23 @@ public class RemoteSizedInteger extends RemoteNumerical {
         return mainType;
     }
 
+    public int getBitSize() {
+        return bitSize;
+    }
+
     public RemoteSizedInteger (RemoteConnection rc, Long value, int bitSize) {
+        if (bitSize < 1)  throw new RuntimeException("BitSize invalid for RemoteSizedInteger!");
         if (bitSize > 64) throw new RuntimeException("BitSize too large for RemoteSizedInteger!");
         this.bitSize = bitSize;
         className = "RemoteSizedInteger" + bitSize;
         mainType = "bit("+bitSize+")";
         initialize(rc);
+        insert(className, Integer.toString(hashCode()), Long.toString(value));
         setValue(value);
-        this.rc.executeUpdate("INSERT INTO "+getClassName()+" (id, value) VALUES ("+hashCode() + ", "+value+");");
     }
 
     private RemoteSizedInteger (RemoteConnection rc, Integer forcedHash, int bitSize) {
+        if (bitSize < 1)  throw new RuntimeException("BitSize invalid for RemoteSizedInteger!");
         if (bitSize > 64) throw new RuntimeException("BitSize too large for RemoteSizedInteger!");
         this.bitSize = bitSize;
         className = "RemoteSizedInteger" + bitSize;
@@ -37,11 +43,21 @@ public class RemoteSizedInteger extends RemoteNumerical {
 
     public Long getValue() {
         try {
-            ResultSet rs = this.rc.executeQuery("SELECT value FROM "+className+" WHERE id = " + idCode());
+            ResultSet rs = selectById(className);
             return rs.getLong("value");
         } catch (SQLException e) {
             return null;
         }
+    }
+
+    public boolean setValue(Long value) {
+        Long v;
+        if (bitSize != 64) {
+            v = value & ((long) Math.pow(2, bitSize) - 1);
+        } else {
+            v = value;
+        }
+        return updateValue(className, v.toString());
     }
 
     public static Set<RemoteSizedInteger> loadAll(RemoteConnection rc, int bitSize) {
@@ -50,13 +66,24 @@ public class RemoteSizedInteger extends RemoteNumerical {
         Set<RemoteSizedInteger> s = new HashSet<>();
         try {
             rc.initialize("RemoteSizedInteger"+bitSize, new String[]{"value"}, new String[]{"bit("+bitSize+")"});
-            ResultSet rs = rc.executeQuery("SELECT * FROM RemoteInteger;");
+            ResultSet rs = select(rc, "RemoteSizedInteger"+bitSize);
             while (rs.next()) {
                 s.add(new RemoteSizedInteger(rc, rs.getInt("id"), bitSize));
             }
             return s;
         } catch (SQLException e) {
             return null;
+        } catch (NullPointerException e) {
+            return s;
         }
+    }
+
+    public static void deleteAll(RemoteConnection rc, int bitSize) {
+        deleteTable(rc, "RemoteSizedInteger"+bitSize);
+    }
+
+    public static void deleteAll(RemoteConnection rc) {
+        for (int bitSize = 1; bitSize <= 64; bitSize++)
+            deleteTable(rc, "RemoteSizedInteger"+bitSize);
     }
 }

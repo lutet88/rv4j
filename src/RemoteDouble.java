@@ -18,7 +18,7 @@ public class RemoteDouble extends RemoteNumerical {
     public RemoteDouble (RemoteConnection rc, Double value) {
         initialize(rc);
         setValue(value);
-        this.rc.executeUpdate("INSERT INTO "+className+" (id, value) VALUES ("+hashCode() + ", "+value+");");
+        insert(className, Integer.toString(hashCode()), Double.toString(value));
     }
 
     private RemoteDouble (RemoteConnection rc, Integer forcedHash) {
@@ -28,24 +28,34 @@ public class RemoteDouble extends RemoteNumerical {
 
     public Double getValue() {
         try {
-            ResultSet rs = this.rc.executeQuery("SELECT value FROM "+className+" WHERE id = " + idCode());
+            ResultSet rs = selectById(className);
             return rs.getDouble("value");
         } catch (SQLException e) {
             return null;
         }
     }
 
+    public boolean setValue(Double value) {
+        return updateValue(className, value.toString());
+    }
+
     public static Set<RemoteDouble> loadAll(RemoteConnection rc) {
         Set<RemoteDouble> s = new HashSet<>();
         try {
             rc.initialize(className, new String[]{"value"}, new String[]{mainType});
-            ResultSet rs = rc.executeQuery("SELECT * FROM "+className+";");
+            ResultSet rs = select(rc, className);
             while (rs.next()) {
                 s.add(new RemoteDouble(rc, rs.getInt("id")));
             }
             return s;
         } catch (SQLException e) {
             return null;
+        } catch (NullPointerException e) {
+            return s;
         }
+    }
+
+    public static void deleteAll(RemoteConnection rc) {
+        deleteTable(rc, className);
     }
 }

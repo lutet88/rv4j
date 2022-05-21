@@ -14,6 +14,14 @@ public abstract class RemoteNumerical extends Remote {
         }
     }
 
+    protected boolean insert(String className, String hashCode, String value) {
+        return this.rc.executeUpdate("INSERT INTO "+className+" (id, value) VALUES ("+hashCode + ", "+value+");");
+    }
+
+    protected boolean updateValue(String className, String value) {
+        return this.rc.executeUpdate("UPDATE "+ className+" SET value = " + value + " WHERE id = " + idCode() + ";");
+    }
+
     @Override
     public boolean delete() {
         return this.rc.executeUpdate("DELETE FROM "+getClassName()+" WHERE id = "+ idCode() + ";");
@@ -26,10 +34,6 @@ public abstract class RemoteNumerical extends Remote {
     }
 
     public abstract Object getValue();
-
-    public boolean setValue(Object value) {
-        return this.rc.executeUpdate("UPDATE "+getClassName()+" SET value = " + value.toString() + " WHERE id = " + idCode() + ";");
-    }
 
     @Override
     public String toString() {

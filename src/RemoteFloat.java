@@ -19,7 +19,7 @@ public class RemoteFloat extends RemoteNumerical {
     public RemoteFloat (RemoteConnection rc, Float value) {
         initialize(rc);
         setValue(value);
-        this.rc.executeUpdate("INSERT INTO "+getClassName()+" (id, value) VALUES ("+hashCode() + ", "+value+");");
+        insert(className, Integer.toString(hashCode()), Float.toString(value));
     }
 
     private RemoteFloat (RemoteConnection rc, Integer forcedHash) {
@@ -29,24 +29,34 @@ public class RemoteFloat extends RemoteNumerical {
 
     public Float getValue() {
         try {
-            ResultSet rs = this.rc.executeQuery("SELECT value FROM "+getClassName()+" WHERE id = " + idCode());
+            ResultSet rs = selectById(className);
             return rs.getFloat("value");
         } catch (SQLException e) {
             return null;
         }
     }
 
+    public boolean setValue(Float value) {
+        return updateValue(className, value.toString());
+    }
+
     public static Set<RemoteFloat> loadAll(RemoteConnection rc) {
         Set<RemoteFloat> s = new HashSet<>();
         try {
             rc.initialize(className, new String[]{"value"}, new String[]{mainType});
-            ResultSet rs = rc.executeQuery("SELECT * FROM "+className+";");
+            ResultSet rs = select(rc, className);
             while (rs.next()) {
                 s.add(new RemoteFloat(rc, rs.getInt("id")));
             }
             return s;
         } catch (SQLException e) {
             return null;
+        } catch (NullPointerException e) {
+            return s;
         }
+    }
+
+    public static void deleteAll(RemoteConnection rc) {
+        deleteTable(rc, className);
     }
 }
