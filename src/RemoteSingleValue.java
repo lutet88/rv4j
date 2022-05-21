@@ -1,6 +1,6 @@
 import java.sql.SQLException;
 
-public abstract class RemoteNumerical extends Remote {
+public abstract class RemoteSingleValue extends Remote {
     abstract String getClassName();
     abstract String getMainType();
     @Override
@@ -14,17 +14,17 @@ public abstract class RemoteNumerical extends Remote {
         }
     }
 
-    protected boolean insert(String className, String hashCode, String value) {
+    protected boolean insertSingleValue(String className, String hashCode, String value) {
         return this.rc.executeUpdate("INSERT INTO "+className+" (id, value) VALUES ("+hashCode + ", "+value+");");
     }
 
-    protected boolean updateValue(String className, String value) {
-        return this.rc.executeUpdate("UPDATE "+ className+" SET value = " + value + " WHERE id = " + idCode() + ";");
+    protected boolean updateSingleValue(String className, String value) {
+        return this.rc.executeUpdate("UPDATE " + className + " SET value = " + value + " WHERE id = " + idCode() + ";");
     }
 
     @Override
     public boolean delete() {
-        return this.rc.executeUpdate("DELETE FROM "+getClassName()+" WHERE id = "+ idCode() + ";");
+        return delete(rc, getClassName(), idCode());
     }
 
     @Override

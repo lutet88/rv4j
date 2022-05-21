@@ -21,6 +21,10 @@ public abstract class Remote {
         rc.executeUpdate("DELETE FROM " + table + ";");
     }
 
+    protected static boolean delete(RemoteConnection rc, String table, int id) {
+        return rc.executeUpdate("DELETE FROM " + table + " WHERE id = "+id+";");
+    }
+
     public static Set<? extends Remote> loadAll(RemoteConnection rc) {
         return null;
     }

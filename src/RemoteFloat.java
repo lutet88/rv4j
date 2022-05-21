@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.*;
 
-public class RemoteFloat extends RemoteNumerical {
+public class RemoteFloat extends RemoteSingleValue implements Comparable<RemoteFloat> {
 
     private static final String className = "RemoteFloat";
     private static final String mainType = "float(24)";
@@ -19,7 +19,7 @@ public class RemoteFloat extends RemoteNumerical {
     public RemoteFloat (RemoteConnection rc, Float value) {
         initialize(rc);
         setValue(value);
-        insert(className, Integer.toString(hashCode()), Float.toString(value));
+        insertSingleValue(className, Integer.toString(hashCode()), Float.toString(value));
     }
 
     private RemoteFloat (RemoteConnection rc, Integer forcedHash) {
@@ -37,7 +37,7 @@ public class RemoteFloat extends RemoteNumerical {
     }
 
     public boolean setValue(Float value) {
-        return updateValue(className, value.toString());
+        return updateSingleValue(className, value.toString());
     }
 
     public static Set<RemoteFloat> loadAll(RemoteConnection rc) {
@@ -58,5 +58,10 @@ public class RemoteFloat extends RemoteNumerical {
 
     public static void deleteAll(RemoteConnection rc) {
         deleteTable(rc, className);
+    }
+
+    @Override
+    public int compareTo(RemoteFloat other) {
+        return getValue().compareTo(other.getValue());
     }
 }

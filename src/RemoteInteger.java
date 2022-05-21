@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.*;
 
-public class RemoteInteger extends RemoteNumerical {
+public class RemoteInteger extends RemoteSingleValue implements Comparable<RemoteInteger> {
     private static final String className = "RemoteInteger";
     private static final String mainType = "integer";
 
@@ -18,7 +18,7 @@ public class RemoteInteger extends RemoteNumerical {
     public RemoteInteger (RemoteConnection rc, Integer value) {
         initialize(rc);
         setValue(value);
-        insert(className, Integer.toString(hashCode()), Integer.toString(value));
+        insertSingleValue(className, Integer.toString(hashCode()), Integer.toString(value));
     }
 
     private RemoteInteger (RemoteConnection rc, Integer forcedHash, boolean dummy) {
@@ -36,7 +36,7 @@ public class RemoteInteger extends RemoteNumerical {
     }
 
     public boolean setValue(Integer value) {
-        return updateValue(className, value.toString());
+        return updateSingleValue(className, value.toString());
     }
 
     public static Set<RemoteInteger> loadAll(RemoteConnection rc) {
@@ -57,5 +57,10 @@ public class RemoteInteger extends RemoteNumerical {
 
     public static void deleteAll(RemoteConnection rc) {
         deleteTable(rc, className);
+    }
+
+    @Override
+    public int compareTo(RemoteInteger other) {
+        return getValue().compareTo(other.getValue());
     }
 }
