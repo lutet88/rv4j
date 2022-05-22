@@ -16,14 +16,14 @@ public class RemoteCharacter extends RemoteSingleValue implements Comparable<Rem
     }
 
     public RemoteCharacter (RemoteConnection rc, Character value) {
+        super(rc);
         initialize(rc);
         setValue(value);
         insertSingleValue(className, Integer.toString(hashCode()), Double.toString(value));
     }
 
     private RemoteCharacter (RemoteConnection rc, Integer forcedHash) {
-        this.rc = rc;
-        forcedHashCode = forcedHash;
+        super(rc, forcedHash);
     }
 
     public Character getValue() {

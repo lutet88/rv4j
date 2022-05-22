@@ -7,9 +7,28 @@ public abstract class Remote {
     Integer forcedHashCode;
     RemoteConnection rc;
 
+    protected Remote(RemoteConnection rc, int forcedHashCode) {
+        this.forcedHashCode = forcedHashCode;
+        this.rc = rc;
+    }
+
+    protected Remote(RemoteConnection rc) {
+        this.rc = rc;
+    }
+
     public abstract boolean initialize(RemoteConnection rc);
     public abstract boolean delete();
     public abstract int idCode();
+
+    protected void setHash(int hash) {
+        this.forcedHashCode = hash;
+    }
+
+    protected void setRc(RemoteConnection rc) {
+        this.rc = rc;
+    }
+
+    abstract String getClassName();
 
     protected ResultSet selectById(String table) {
         return this.rc.executeQuery("SELECT * FROM "+table+" WHERE id = " + idCode()+";");
@@ -43,4 +62,10 @@ public abstract class Remote {
 
     public static void deleteAll(RemoteConnection rc) {}
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) return true;
+        if (!(other instanceof Remote)) return false;
+        return ((Remote) other).idCode() == this.idCode();
+    }
 }

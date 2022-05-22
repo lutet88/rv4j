@@ -68,11 +68,10 @@ public class SQLiteConnection extends RemoteConnection{
 
         // 2. CREATE TABLE
         StringBuilder sb = new StringBuilder();
-        sb.append("create table if not exists \""+typeName+"\" (id integer, ");
-        String prefix = "";
+        sb.append("create table if not exists \""+typeName+"\" (id integer");
+        String prefix = ", ";
         for (int i = 0; i < keys.length; i++) {
             sb.append(prefix);
-            prefix = ", ";
             sb.append(keys[i]);
             sb.append(" ");
             sb.append(types[i]);

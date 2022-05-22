@@ -16,14 +16,14 @@ public class RemoteInteger extends RemoteSingleValue implements Comparable<Remot
     }
 
     public RemoteInteger (RemoteConnection rc, Integer value) {
+        super(rc);
         initialize(rc);
         setValue(value);
         insertSingleValue(className, Integer.toString(hashCode()), Integer.toString(value));
     }
 
     private RemoteInteger (RemoteConnection rc, Integer forcedHash, boolean dummy) {
-        this.rc = rc;
-        forcedHashCode = forcedHash;
+        super(rc, forcedHash);
     }
 
     public Integer getValue() {

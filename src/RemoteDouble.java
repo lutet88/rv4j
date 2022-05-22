@@ -16,14 +16,14 @@ public class RemoteDouble extends RemoteSingleValue implements Comparable<Remote
     }
 
     public RemoteDouble (RemoteConnection rc, Double value) {
+        super(rc);
         initialize(rc);
         setValue(value);
         insertSingleValue(className, Integer.toString(hashCode()), Double.toString(value));
     }
 
     private RemoteDouble (RemoteConnection rc, Integer forcedHash) {
-        this.rc = rc;
-        forcedHashCode = forcedHash;
+        super(rc, forcedHash);
     }
 
     public Double getValue() {

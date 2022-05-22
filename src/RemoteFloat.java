@@ -17,14 +17,14 @@ public class RemoteFloat extends RemoteSingleValue implements Comparable<RemoteF
     }
 
     public RemoteFloat (RemoteConnection rc, Float value) {
+        super(rc);
         initialize(rc);
         setValue(value);
         insertSingleValue(className, Integer.toString(hashCode()), Float.toString(value));
     }
 
     private RemoteFloat (RemoteConnection rc, Integer forcedHash) {
-        this.rc = rc;
-        forcedHashCode = forcedHash;
+        super(rc, forcedHash);
     }
 
     public Float getValue() {

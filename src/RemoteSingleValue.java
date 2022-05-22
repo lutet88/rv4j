@@ -2,8 +2,17 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public abstract class RemoteSingleValue extends Remote {
-    abstract String getClassName();
+
+    protected RemoteSingleValue(RemoteConnection rc, int forcedHashCode) {
+        super(rc, forcedHashCode);
+    }
+
+    protected RemoteSingleValue(RemoteConnection rc) {
+        super(rc);
+    }
+
     abstract String getMainType();
+
     @Override
     public boolean initialize(RemoteConnection rc) {
         try {

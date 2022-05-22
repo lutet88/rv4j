@@ -3,7 +3,23 @@ import java.util.*;
 public class RemoteTestingDriver {
 
     public static void main(String[] args) {
-        testRString();
+        testRArray();
+    }
+
+    public static void testRArray() {
+        RemoteConnection rc = new SQLiteConnection("test.db");
+        Set<RemoteArray> remoteArrays = RemoteArray.loadAll(rc);
+        System.out.println("Remote Arrays: " +remoteArrays);
+
+        RemoteArray<RemoteInteger> arr = new RemoteArray<>(rc, 4);
+        arr.set(0, new RemoteInteger(rc, 4));
+        arr.set(1, new RemoteInteger(rc, 400));
+        arr.set(2, new RemoteInteger(rc, 40000));
+        arr.set(3, new RemoteInteger(rc, -400000));
+
+        System.out.println(arr);
+
+        rc.close();
     }
 
     public static void testRString() {
