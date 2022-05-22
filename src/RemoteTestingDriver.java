@@ -21,8 +21,8 @@ public class RemoteTestingDriver {
         rStrSet = RemoteString.loadAll(rc);
         System.out.println("new strings: "+rStrSet);
 
-        rs2.setValue("829321");
-        rs3.setValue(String.valueOf((char) 1) + String.valueOf((char) 1) + String.valueOf((char) 1));
+        rs2.setValue("Robert'); DROP TABLE Students;--");
+        rs3.setValue(String.valueOf((char) 1) + ((char) 1) + ((char) 1));
         rs4.delete();
 
         rStrSet = RemoteString.loadAll(rc);

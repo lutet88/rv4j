@@ -1,5 +1,6 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.*;
 
 public abstract class RemoteConnection {
@@ -10,4 +11,5 @@ public abstract class RemoteConnection {
     public abstract boolean isConnected();
     public abstract boolean isClosed() throws SQLException;
     public abstract void initialize(String typeName, String[] keys, String[] types) throws SQLException;
+    public abstract Connection getConnection();
 }

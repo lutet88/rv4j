@@ -1,4 +1,6 @@
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Set;
 
 public abstract class Remote {
@@ -18,11 +20,21 @@ public abstract class Remote {
     }
 
     protected static void deleteTable(RemoteConnection rc, String table) {
-        rc.executeUpdate("DELETE FROM " + table + ";");
+        try {
+            PreparedStatement stm = rc.getConnection().prepareStatement("DELETE FROM "+table);
+            stm.executeUpdate();
+        } catch (SQLException ignored) {}
     }
 
     protected static boolean delete(RemoteConnection rc, String table, int id) {
-        return rc.executeUpdate("DELETE FROM " + table + " WHERE id = "+id+";");
+        try {
+            PreparedStatement stm = rc.getConnection().prepareStatement("DELETE FROM "+table+" WHERE id = ?");
+            stm.setInt(1, id);
+            stm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     public static Set<? extends Remote> loadAll(RemoteConnection rc) {

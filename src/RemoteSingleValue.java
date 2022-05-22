@@ -1,3 +1,4 @@
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public abstract class RemoteSingleValue extends Remote {
@@ -15,11 +16,25 @@ public abstract class RemoteSingleValue extends Remote {
     }
 
     protected boolean insertSingleValue(String className, String hashCode, String value) {
-        return this.rc.executeUpdate("INSERT INTO "+className+" (id, value) VALUES ("+hashCode + ", "+value+");");
+        try {
+            PreparedStatement stm = rc.getConnection().prepareStatement("INSERT INTO "+className+" (id, value) VALUES ("+hashCode + ", ? );");
+            stm.setString(1, value);
+            stm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     protected boolean updateSingleValue(String className, String value) {
-        return this.rc.executeUpdate("UPDATE " + className + " SET value = " + value + " WHERE id = " + idCode() + ";");
+        try {
+            PreparedStatement stm = rc.getConnection().prepareStatement("UPDATE " + className + " SET value = ? WHERE id = " + idCode() + ";");
+            stm.setString(1, value);
+            stm.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     @Override

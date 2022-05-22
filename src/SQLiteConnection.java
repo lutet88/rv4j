@@ -80,4 +80,9 @@ public class SQLiteConnection extends RemoteConnection{
         sb.append(");");
         s.executeUpdate(sb.toString());
     }
+
+    @Override
+    public Connection getConnection() {
+        return conn;
+    }
 }
