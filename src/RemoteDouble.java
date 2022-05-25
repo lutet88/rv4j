@@ -15,6 +15,8 @@ public class RemoteDouble extends RemoteSingleValue implements Comparable<Remote
         return mainType;
     }
 
+    public static String getType() { return mainType; }
+
     public RemoteDouble (RemoteConnection rc, Double value) {
         super(rc);
         initialize(rc);
@@ -22,7 +24,7 @@ public class RemoteDouble extends RemoteSingleValue implements Comparable<Remote
         insertSingleValue(className, Integer.toString(hashCode()), Double.toString(value));
     }
 
-    private RemoteDouble (RemoteConnection rc, Integer forcedHash) {
+    RemoteDouble (RemoteConnection rc, Integer forcedHash) {
         super(rc, forcedHash);
     }
 

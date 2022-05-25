@@ -11,8 +11,6 @@ public abstract class RemoteSingleValue extends Remote {
         super(rc);
     }
 
-    abstract String getMainType();
-
     @Override
     public boolean initialize(RemoteConnection rc) {
         try {

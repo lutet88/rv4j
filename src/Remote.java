@@ -20,6 +20,10 @@ public abstract class Remote {
     public abstract boolean delete();
     public abstract int idCode();
 
+    public String getMainType() {
+        return null;
+    }
+
     protected void setHash(int hash) {
         this.forcedHashCode = hash;
     }

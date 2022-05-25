@@ -1,26 +1,56 @@
+import javax.crypto.NullCipher;
 import java.util.*;
 
 public class RemoteTestingDriver {
 
     public static void main(String[] args) {
-        testRArray();
+        testRVec3();
+        testRChar();
+        testRSI();
+        testRString();
+
+        System.out.println("tests done!");
     }
 
-    public static void testRArray() {
+    public static void testRVec3() {
         RemoteConnection rc = new SQLiteConnection("test.db");
-        Set<RemoteArray> remoteArrays = RemoteArray.loadAll(rc);
-        System.out.println("Remote Arrays: " +remoteArrays);
 
-        RemoteArray<RemoteInteger> arr = new RemoteArray<>(rc, 4);
-        arr.set(0, new RemoteInteger(rc, 4));
-        arr.set(1, new RemoteInteger(rc, 400));
-        arr.set(2, new RemoteInteger(rc, 40000));
-        arr.set(3, new RemoteInteger(rc, -400000));
+        RemoteDouble.deleteAll(rc);
+        System.out.println("deleted doubles");
+        RemoteVector3.deleteAll(rc);
+        System.out.println("deleted vec3s");
 
-        System.out.println(arr);
+        RemoteDouble rd = new RemoteDouble(rc, 0.99);
+        RemoteVector3 rvec1 = new RemoteVector3(rc, 0.5, rd.getValue(), 0.7);
+        RemoteVector3 rvec2 = new RemoteVector3(rc, 0.9, 0.4, 0.2);
+        RemoteVector3 rvec3 = new RemoteVector3(rc, rvec1.y, rvec1.x, rvec2.z);
+        RemoteVector3 rvec4 = new RemoteVector3(rc, new RemoteDouble(rc, 1928393.298), rvec3.z, rvec3.x);
+
+        Set<RemoteVector3> rVecSet = RemoteVector3.loadAll(rc);
+        System.out.println("new vecs: "+rVecSet);
+
+        Set<RemoteDouble> rDoubleSet = RemoteDouble.loadAll(rc);
+        System.out.println("new doubles: "+rDoubleSet);
+
+        rd.delete();
+        rvec1.x.setValue(0.0);
+        rvec2.y.setValue(rvec3.y.getValue());
+        rvec2.z.delete();
+        rvec4.delete();
+
+        try {
+            rVecSet = RemoteVector3.loadAll(rc);
+            System.out.println("new vecs: " + rVecSet);
+
+            rDoubleSet = RemoteDouble.loadAll(rc);
+            System.out.println("new doubles: " + rDoubleSet);
+        } catch (NullPointerException e) {
+            System.out.println("nullpointer detected. this is working properly");
+        }
 
         rc.close();
     }
+
 
     public static void testRString() {
         RemoteConnection rc = new SQLiteConnection("test.db");

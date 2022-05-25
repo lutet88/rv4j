@@ -16,6 +16,9 @@ public class RemoteSizedInteger extends RemoteSingleValue implements Comparable<
         return mainType;
     }
 
+    public static String getType() { return "RemoteSizedInteger"; }
+
+
     public int getBitSize() {
         return bitSize;
     }
@@ -31,8 +34,7 @@ public class RemoteSizedInteger extends RemoteSingleValue implements Comparable<
         insertSingleValue(className, Integer.toString(hashCode()), Long.toString(value));
         setValue(value);
     }
-
-    private RemoteSizedInteger (RemoteConnection rc, Integer forcedHash, int bitSize) {
+    RemoteSizedInteger (RemoteConnection rc, Integer forcedHash, int bitSize) {
         super(rc, forcedHash);
         if (bitSize < 1)  throw new RuntimeException("BitSize invalid for RemoteSizedInteger!");
         if (bitSize > 64) throw new RuntimeException("BitSize too large for RemoteSizedInteger!");

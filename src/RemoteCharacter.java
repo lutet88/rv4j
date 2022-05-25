@@ -15,6 +15,8 @@ public class RemoteCharacter extends RemoteSingleValue implements Comparable<Rem
         return mainType;
     }
 
+    public static String getType() { return mainType; }
+
     public RemoteCharacter (RemoteConnection rc, Character value) {
         super(rc);
         initialize(rc);
@@ -22,7 +24,7 @@ public class RemoteCharacter extends RemoteSingleValue implements Comparable<Rem
         insertSingleValue(className, Integer.toString(hashCode()), Double.toString(value));
     }
 
-    private RemoteCharacter (RemoteConnection rc, Integer forcedHash) {
+    RemoteCharacter (RemoteConnection rc, Integer forcedHash) {
         super(rc, forcedHash);
     }
 

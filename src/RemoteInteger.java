@@ -5,6 +5,8 @@ public class RemoteInteger extends RemoteSingleValue implements Comparable<Remot
     private static final String className = "RemoteInteger";
     private static final String mainType = "integer";
 
+    public static String getType() { return mainType; }
+
     @Override
     public String getClassName() {
         return className;
@@ -22,7 +24,7 @@ public class RemoteInteger extends RemoteSingleValue implements Comparable<Remot
         insertSingleValue(className, Integer.toString(hashCode()), Integer.toString(value));
     }
 
-    private RemoteInteger (RemoteConnection rc, Integer forcedHash, boolean dummy) {
+    RemoteInteger(RemoteConnection rc, Integer forcedHash, boolean dummy) {
         super(rc, forcedHash);
     }
 

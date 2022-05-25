@@ -16,6 +16,8 @@ public class RemoteFloat extends RemoteSingleValue implements Comparable<RemoteF
         return mainType;
     }
 
+    public static String getType() { return mainType; }
+
     public RemoteFloat (RemoteConnection rc, Float value) {
         super(rc);
         initialize(rc);
@@ -23,7 +25,7 @@ public class RemoteFloat extends RemoteSingleValue implements Comparable<RemoteF
         insertSingleValue(className, Integer.toString(hashCode()), Float.toString(value));
     }
 
-    private RemoteFloat (RemoteConnection rc, Integer forcedHash) {
+    RemoteFloat (RemoteConnection rc, Integer forcedHash) {
         super(rc, forcedHash);
     }
 
