@@ -8,7 +8,6 @@ an SQLite or MySQL/MariaDB database!
 ```java
 public static void main(String[] args) {
     RemoteConnection rc = new SQLiteConnection("test.db");
-    // RemoteConnection rc = new MySQLConnection("localhost:3288");
     
     Set<RemoteInteger> returnedSet = RemoteInteger.loadAll(rc);
     System.out.println("existing RemoteIntegers: "+returnedSet);
@@ -18,6 +17,22 @@ public static void main(String[] args) {
     System.out.println("value of ri: " + ri);
 }
 ```
+
+### api reference
+* Remote
+  * RemoteSingleValue
+    * RemoteCharacter
+    * RemoteDouble
+    * RemoteFloat
+    * RemoteInteger
+    * RemoteSizedInteger
+    * RemoteString
+  * RemoteVector3
+* RemoteConnection
+  * SQLiteConnection
+  * (future) MySQLConnection
+
+Just read the code it's well-commented and not too long
 
 ### making your own remote class
 
