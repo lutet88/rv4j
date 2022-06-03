@@ -1,3 +1,5 @@
+package rv4j;
+
 import java.sql.*;
 
 public class SQLiteConnection extends RemoteConnection{

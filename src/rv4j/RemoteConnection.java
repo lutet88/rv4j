@@ -1,3 +1,7 @@
+package rv4j;
+
+import rv4j.*;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;

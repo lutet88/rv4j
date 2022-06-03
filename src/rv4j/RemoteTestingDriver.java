@@ -1,3 +1,7 @@
+package rv4j;
+
+import rv4j.*;
+
 import javax.crypto.NullCipher;
 import java.util.*;
 

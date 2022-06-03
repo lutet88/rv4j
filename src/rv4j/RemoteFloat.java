@@ -1,9 +1,14 @@
+package rv4j;
+
+import rv4j.*;
+
 import java.sql.*;
 import java.util.*;
 
-public class RemoteCharacter extends RemoteSingleValue implements Comparable<RemoteCharacter> {
-    private static final String className = "RemoteCharacter";
-    private static final String mainType = "char(1)";
+public class RemoteFloat extends RemoteSingleValue implements Comparable<RemoteFloat> {
+
+    private static final String className = "RemoteFloat";
+    private static final String mainType = "float(24)";
 
     @Override
     public String getClassName() {
@@ -17,37 +22,37 @@ public class RemoteCharacter extends RemoteSingleValue implements Comparable<Rem
 
     public static String getType() { return mainType; }
 
-    public RemoteCharacter (RemoteConnection rc, Character value) {
+    public RemoteFloat (RemoteConnection rc, Float value) {
         super(rc);
         initialize(rc);
         setValue(value);
-        insertSingleValue(className, Integer.toString(hashCode()), Double.toString(value));
+        insertSingleValue(className, Integer.toString(hashCode()), Float.toString(value));
     }
 
-    RemoteCharacter (RemoteConnection rc, Integer forcedHash) {
+    RemoteFloat (RemoteConnection rc, Integer forcedHash) {
         super(rc, forcedHash);
     }
 
-    public Character getValue() {
+    public Float getValue() {
         try {
             ResultSet rs = selectById(className);
-            return (char) rs.getInt("value");
+            return rs.getFloat("value");
         } catch (SQLException e) {
             return null;
         }
     }
 
-    public boolean setValue(Character value) {
-        return updateSingleValue(className, Integer.valueOf(value).toString());
+    public boolean setValue(Float value) {
+        return updateSingleValue(className, value.toString());
     }
 
-    public static Set<RemoteCharacter> loadAll(RemoteConnection rc) {
-        Set<RemoteCharacter> s = new HashSet<>();
+    public static Set<RemoteFloat> loadAll(RemoteConnection rc) {
+        Set<RemoteFloat> s = new HashSet<>();
         try {
             rc.initialize(className, new String[]{"value"}, new String[]{mainType});
             ResultSet rs = select(rc, className);
             while (rs.next()) {
-                s.add(new RemoteCharacter(rc, rs.getInt("id")));
+                s.add(new RemoteFloat(rc, rs.getInt("id")));
             }
             return s;
         } catch (SQLException e) {
@@ -62,7 +67,7 @@ public class RemoteCharacter extends RemoteSingleValue implements Comparable<Rem
     }
 
     @Override
-    public int compareTo(RemoteCharacter other) {
+    public int compareTo(RemoteFloat other) {
         return getValue().compareTo(other.getValue());
     }
 }

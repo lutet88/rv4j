@@ -1,9 +1,13 @@
+package rv4j;
+
+import rv4j.*;
+
 import java.sql.*;
 import java.util.*;
 
-public class RemoteInteger extends RemoteSingleValue implements Comparable<RemoteInteger> {
-    private static final String className = "RemoteInteger";
-    private static final String mainType = "integer";
+public class RemoteString extends RemoteSingleValue implements Comparable<RemoteString> {
+    private static final String className = "RemoteString";
+    private static final String mainType = "varbinary(32768)";
 
     public static String getType() { return mainType; }
 
@@ -17,37 +21,37 @@ public class RemoteInteger extends RemoteSingleValue implements Comparable<Remot
         return mainType;
     }
 
-    public RemoteInteger (RemoteConnection rc, Integer value) {
+    public RemoteString (RemoteConnection rc, String value) {
         super(rc);
         initialize(rc);
         setValue(value);
-        insertSingleValue(className, Integer.toString(hashCode()), Integer.toString(value));
+        insertSingleValue(className, Integer.toString(hashCode()), "'"+value+"'");
     }
 
-    RemoteInteger(RemoteConnection rc, Integer forcedHash, boolean dummy) {
+    RemoteString (RemoteConnection rc, Integer forcedHash) {
         super(rc, forcedHash);
     }
 
-    public Integer getValue() {
+    public String getValue() {
         try {
             ResultSet rs = selectById(className);
-            return rs.getInt("value");
+            return rs.getString("value");
         } catch (SQLException e) {
             return null;
         }
     }
 
-    public boolean setValue(Integer value) {
-        return updateSingleValue(className, value.toString());
+    public boolean setValue(String value) {
+        return updateSingleValue(className, "'"+value+"'");
     }
 
-    public static Set<RemoteInteger> loadAll(RemoteConnection rc) {
-        Set<RemoteInteger> s = new HashSet<>();
+    public static Set<RemoteString> loadAll(RemoteConnection rc) {
+        Set<RemoteString> s = new HashSet<>();
         try {
-            rc.initialize("RemoteInteger", new String[]{"value"}, new String[]{"integer"});
+            rc.initialize(className, new String[]{"value"}, new String[]{mainType});
             ResultSet rs = select(rc, className);
             while (rs.next()) {
-                s.add(new RemoteInteger(rc, rs.getInt("id"), true));
+                s.add(new RemoteString(rc, rs.getInt("id")));
             }
             return s;
         } catch (SQLException e) {
@@ -62,7 +66,7 @@ public class RemoteInteger extends RemoteSingleValue implements Comparable<Remot
     }
 
     @Override
-    public int compareTo(RemoteInteger other) {
+    public int compareTo(RemoteString other) {
         return getValue().compareTo(other.getValue());
     }
 }

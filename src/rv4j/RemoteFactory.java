@@ -1,3 +1,7 @@
+package rv4j;
+
+import rv4j.*;
+
 public class RemoteFactory {
     public static Remote createRemote(RemoteConnection rc, String type, int id) {
         if (type.equals("RemoteInteger")) {
