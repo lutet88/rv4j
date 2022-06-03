@@ -77,7 +77,7 @@ public class RemoteVector3 extends Remote {
     }
 
     @Override
-    String getClassName() {
+    public String getClassName() {
         return "RemoteVector3";
     }
 

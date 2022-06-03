@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.Set;
 
 public abstract class Remote {
-    Integer forcedHashCode;
-    RemoteConnection rc;
+    public Integer forcedHashCode;
+    public RemoteConnection rc;
 
     protected Remote(RemoteConnection rc, int forcedHashCode) {
         this.forcedHashCode = forcedHashCode;
@@ -36,7 +36,7 @@ public abstract class Remote {
         this.rc = rc;
     }
 
-    abstract String getClassName();
+    public abstract String getClassName();
 
     protected ResultSet selectById(String table) {
         return this.rc.executeQuery("SELECT * FROM "+table+" WHERE id = " + idCode()+";");
