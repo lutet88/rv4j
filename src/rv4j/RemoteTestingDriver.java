@@ -1,17 +1,20 @@
 package rv4j;
 
-import rv4j.*;
-
-import javax.crypto.NullCipher;
 import java.util.*;
 
 public class RemoteTestingDriver {
+    /*
+    this is the testing driver for rv4j.
+    it includes a variety of real tests, from outrageous values to SQL injection.
+    automated workflows can assert that the program's outputs match expected results.
+     */
 
     public static void main(String[] args) {
         testRVec3();
         testRChar();
         testRSI();
         testRString();
+        // these four types are chosen as they represent the entire functionality of the package for the most part.
 
         System.out.println("tests done!");
     }

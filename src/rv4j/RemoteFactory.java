@@ -3,6 +3,12 @@ package rv4j;
 import rv4j.*;
 
 public class RemoteFactory {
+    /*
+    This is a helper class that allows Remote classes that point to other Remote classes to create each other.
+    This is unused, as of now. I couldn't get RemoteArray to work with all types, although implementing it without
+    generics would be simple.
+     */
+
     public static Remote createRemote(RemoteConnection rc, String type, int id) {
         if (type.equals("RemoteInteger")) {
             return new RemoteInteger(rc, id, false);

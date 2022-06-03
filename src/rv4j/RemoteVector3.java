@@ -8,6 +8,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class RemoteVector3 extends Remote {
+    /*
+    this is a demonstration of a Remote class with its own Remote objects inside.
+    by storing hashCodes (memory pointers, in the sense of the database),
+    we are able to encapsulate variables inside each other.
+     */
 
     public RemoteDouble x;
     public RemoteDouble y;
@@ -48,7 +53,8 @@ public class RemoteVector3 extends Remote {
     public boolean initialize(RemoteConnection rc) {
         try {
             this.rc = rc;
-            this.rc.initialize(getClassName(), new String[]{"x", "y", "z"}, new String[]{"float(53)", "float(53)", "float(53)"});
+            // the schema is {id=int, x_id=int, y_id=int, z_id=int}
+            this.rc.initialize(getClassName(), new String[]{"x", "y", "z"}, new String[]{"integer", "integer", "integer"});
             return true;
         } catch (SQLException e) {
             return false;
